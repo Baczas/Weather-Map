@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Twoja Aplikacja</title>
+    <!-- Dodaj tutaj linki do Bootstrapa i innych bibliotek -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="/">Home</a>
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="/create_tables">Utwórz Tabele</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/table_schema/weather">Schemat Tabeli Weather</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/table_schema/rides">Schemat Tabeli Rides</a>
+            </li>
+        </ul>
+    </nav>
+    
+    <div class="container">
+        <div class="row">
+            <!-- Lewa kolumna z formularzem -->
+            <div class="col-md-4">
+                <h2>Weather Map</h2>
+                <form id="searchForm">
+                    <div class="form-group">
+                        <label for="startLocation">Miejsce Początkowe:</label>
+                        <input type="text" class="form-control" id="startLocation"
+                            placeholder="Wprowadź miejsce początkowe" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="endLocation">Miejsce Docelowe:</label>
+                        <input type="text" class="form-control" id="endLocation" placeholder="Wprowadź miejsce docelowe"
+                            required>
+                    </div>
+                    <div class="form-group">
+                        <label for="departureTime">Godzina Wyjazdu:</label>
+                        <input type="datetime-local" class="form-control" id="departureTime" required>
+                    </div>
+                    
+
+                    <div class="form-group text-right">
+                        <button type="button" class="btn btn-secondary" id="swapPlaces">
+                            <i class="fas fa-arrow-right-arrow-left fa-rotate-90"></i>
+                        </button>
+                        <button type="submit" class="btn btn-primary">Wyszukaj</button>
+                    </div>
+                </form>
+                <div id="loadingSpinner" class="text-center" style="display: none;">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                    <p>Ładowanie...</p>
+                </div>
+            </div>
+
+            <!-- Prawa kolumna z treścią urządzenia -->
+            <div class="col-md-8">
+                <div class="results" id="results-content">
+                    <iframe src="" id="iframe-content" style="width: 100%; height: 500px;"></iframe>
+                    
+                </div>
+                
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- Skrypt Bootstrap JavaScript i jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        // JavaScript do dynamicznego wczytywania wyników trasowania po kliknięciu na przycisk
+        const searchForm = document.getElementById('searchForm');
+        const iframeContent = document.getElementById('iframe-content');
+
+        document.getElementById("swapPlaces").addEventListener("click", function () {
+            const startLocation = document.getElementById("startLocation").value;
+            const endLocation = document.getElementById("endLocation").value;
+
+            document.getElementById("startLocation").value = endLocation;
+            document.getElementById("endLocation").value = startLocation;
+        });
+
+        searchForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+            const startLocation = document.getElementById('startLocation').value;
+            const endLocation = document.getElementById('endLocation').value;
+            const departureTime = document.getElementById('departureTime').value;
+            const loadingSpinner = document.getElementById('loadingSpinner'); // Pobierz element animacji
+
+            // Wyświetl animację załadowania
+            loadingSpinner.style.display = "block";
+
+            // Ustaw źródło iframe na odpowiednią stronę
+            iframeContent.src = `/search?startLocation=${startLocation}&endLocation=${endLocation}&departureTime=${departureTime}`;
+
+            // Obsługa zdarzenia załadowania iframe (po załadowaniu danych)
+            iframeContent.onload = function() {
+                // Ukryj animację załadowania
+                loadingSpinner.style.display = "none";
+                };
+        });
+        // JavaScript
+        document.addEventListener("DOMContentLoaded", function() {
+            // Pobierz element input z id "departureTime"
+            const departureTimeInput = document.getElementById("departureTime");
+            
+            // Utwórz obiekt Date reprezentujący bieżącą datę i czas
+            const currentDate = new Date();
+            
+            // Przygotuj format daty i godziny w formacie ISO
+            const currentISODate = currentDate.toISOString().substring(0, 16);
+            
+            // Ustaw wartość pola "datetime-local" na bieżącą datę i godzinę
+            departureTimeInput.value = currentISODate;
+        });
+
+    </script>
+
+</body>
+
+
+</html>

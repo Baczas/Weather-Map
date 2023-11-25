@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Twoja Aplikacja</title>
+    <!-- Dodaj tutaj linki do Bootstrapa i innych bibliotek -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="/">Home</a>
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="/create_tables">Utwórz Tabele</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/table_schema/weather">Schemat Tabeli Weather</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/table_schema/rides">Schemat Tabeli Rides</a>
+            </li>
+        </ul>
+    </nav>
+    <div class="container">
+        <div style="font-size: 13px;">{{ text|safe }}</div>
+        <hr>
+        <div class="container">
+            <div class="row">
+                <!-- Wiersz z przyciskami i polem tekstowym -->
+                <div class="col-md-12">
+                    <form action="/table_schema/{{ table_name }}" method="post">
+                        <div class="form-row align-items-center">
+                            <div class="col-md-3">
+                                <input type="number" class="form-control" id="count" name="count" placeholder="Liczba rekordów"> <!-- required> -->
+                            </div>
+                            <div class="col-md-3">
+                                <button type="submit" name="show_x" class="btn btn-success">Wyświetl x rekordów</button>
+                            </div>
+                            <div class="col-md-3">
+                                <button type="submit" name="show_all" class="btn btn-primary">Wyświetl wszystkie rekordy</button>
+                            </div>                            
+                            <div class="col-md-3">
+                                <button type="submit" name="recreate_table" class="btn btn-primary">Recreate Table</button>
+                            </div>
+                            <div class="col-md-3">
+                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#confirmDeleteModal">Usuń wszystkie dane</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <!-- Modal -->
+            <div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="confirmDeleteModalLabel">Potwierdź usunięcie danych</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            Czy na pewno chcesz usunąć wszystkie dane z tabeli "{{ table_name }}"? Tej operacji nie można cofnąć.
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Anuluj</button>
+                            <form action="/table_schema/{{ table_name }}" method="post">
+                                <button type="submit" name="delete_all" class="btn btn-danger">Usuń dane</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr>
+
+
+        
+        <div style="font-size: 13px;">{{ records|safe }}</div>
+    </div>
+
+    <!-- Skrypt Bootstrap JavaScript i jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

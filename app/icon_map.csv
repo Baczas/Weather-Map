@@ -1,0 +1,19 @@
+ow_id,fa_id,description
+01d,sun,clear sky
+01n,moon,clear sky
+02d,cloud-sun,few clouds
+02n,cloud-moon,few clouds
+03d,cloud,scattered clouds
+03n,cloud,scattered clouds
+04d,cloud,broken clouds
+04n,cloud,broken clouds
+09d,cloud-showers-heavy,shower rain
+09n,cloud-showers-heavy,shower rain
+10d,cloud-rain,rain
+10n,cloud-rain,rain
+11d,thunderstorm,thunderstorm
+11n,thunderstorm,thunderstorm
+13d,snowflake,snow
+13n,snowflake,snow
+50d,smog,mist
+50n,smog,mist
